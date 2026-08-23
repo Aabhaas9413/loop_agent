@@ -16,3 +16,25 @@ class State(TypedDict):
     feedback: str
     decision: str
     revision_count: int
+
+
+def writer(state: State) -> State:
+    """Agent 1: creates the first answer draft based on the topic."""
+    response = model.invoke(
+        [
+            {
+                "role": "system",
+                "content": "You are a helpful beginner friendly teacher, explain the topic in 150 to 160 words. Use simple language"
+            },
+            {
+                "role": "user",
+                "content": f"Write a draft for the following topic: {state['topic']}",
+            },
+        ]
+    )
+    return {
+        "draft": response.choices[0].message.content,
+        "feedback": "",
+        "decision": "",
+        "revision_count": 0,
+    }
